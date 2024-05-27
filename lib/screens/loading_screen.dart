@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
+import 'package:clima/screens/location_screen.dart';
 import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/services/location.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -19,6 +21,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLocationData();
   }
 
   void getLocationData() async {
@@ -27,10 +30,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(
         "The Latitude is : ${location.latitude} & The Longitude is : ${location.longitude}");
 
-    NetworkHelper networkHelper =  NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey');
+    NetworkHelper networkHelper = NetworkHelper(
+        url:
+            'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey');
 
     var myData = await networkHelper.getData();
     // print(myData);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LocationScreen()));
 
     var temp = myData['main']['temp'];
     var name = myData['name'];
@@ -38,9 +45,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(condition);
     print(temp);
     print(name);
-
   }
-
 
   void getWeatherData() async {
     http.Response response;
@@ -53,7 +58,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(condition);
     print(temp);
     print(name);
-
   }
 
   @override
@@ -61,7 +65,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          onPressed: () => getLocationData(),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LocationScreen()));
+          },
           child: Text('Get Location'),
         ),
       ),
