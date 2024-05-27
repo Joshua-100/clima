@@ -1,5 +1,10 @@
+import 'dart:ffi';
+
+import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:clima/services/location.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -7,24 +12,48 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double? latitude;
+  double? longitude;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getLocation();
-    print("Print Initialising State");
   }
 
-  void getLocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      //nothing
-    }
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
-    print(position);
+  void getLocationData() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    print(
+        "The Latitude is : ${location.latitude} & The Longitude is : ${location.longitude}");
+
+    NetworkHelper networkHelper =  NetworkHelper(url: 'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey');
+
+    var myData = await networkHelper.getData();
+    // print(myData);
+
+    var temp = myData['main']['temp'];
+    var name = myData['name'];
+    var condition = myData['weather'][0]['id'];
+    print(condition);
+    print(temp);
+    print(name);
+
+  }
+
+
+  void getWeatherData() async {
+    http.Response response;
+    response = await http.get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=0fdce3e266e20eaabbfbcb73e0107e4f'));
+    var myDataFormatted = jsonDecode(response.body);
+    var temp = myDataFormatted['main']['temp'];
+    var name = myDataFormatted['name'];
+    var condition = myDataFormatted['weather'][0]['id'];
+    print(condition);
+    print(temp);
+    print(name);
+
   }
 
   @override
@@ -32,7 +61,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          onPressed: () => print("yesds"),
+          onPressed: () => getLocationData(),
           child: Text('Get Location'),
         ),
       ),
