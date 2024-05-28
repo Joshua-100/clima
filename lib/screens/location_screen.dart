@@ -27,6 +27,7 @@ class _LocationScreenState extends State<LocationScreen> {
         temperature = 0;
         weatherMessage = "Unable to retrieve Weather Data";
         cityName = "Null";
+        print("No Data");
       }
       double temp = weatherData['main']['temp'];
       temperature = temp.toInt();

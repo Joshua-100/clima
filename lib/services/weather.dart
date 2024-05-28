@@ -13,13 +13,9 @@ class WeatherModel {
   getLocationWeatherData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print(
-        "The Latitude is : ${location.latitude} & The Longitude is : ${location.longitude}");
-
     NetworkHelper networkHelper = NetworkHelper(
         url:
             'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
-
     var myData = await networkHelper.getData();
     return myData;
   }
