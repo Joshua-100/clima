@@ -2,6 +2,14 @@ import 'package:clima/services/location.dart';
 import 'package:clima/services/networking.dart';
 
 class WeatherModel {
+  getCityWeatherData(String cityName) async {
+    String url =
+        'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey&units=metric';
+    NetworkHelper networkHelper = NetworkHelper(url: url);
+    var myData = await networkHelper.getData();
+    return myData;
+  }
+
   getLocationWeatherData() async {
     Location location = Location();
     await location.getCurrentLocation();

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 const kTempTextStyle = TextStyle(
   fontFamily: 'Spartan MB',
@@ -27,6 +28,7 @@ const kConditionTextStyle = TextStyle(
 const borderRadius = 12.0;
 
 const kFieldBoxDecoration = InputDecoration(
+    labelStyle: TextStyle(color: Colors.black),
     fillColor: Colors.white,
     filled: true,
     icon: Icon(Icons.location_city, color: Colors.white),

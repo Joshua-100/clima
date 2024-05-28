@@ -17,11 +17,17 @@ class _LocationScreenState extends State<LocationScreen> {
   String? cityName;
   String? weatherIcon;
   String? weatherMessage;
+  var namedCity;
 
   WeatherModel weatherModel = WeatherModel();
 
   void updateUI(dynamic weatherData) {
     setState(() {
+      if (weatherData == null){
+        temperature = 0;
+        weatherMessage = "Unable to retrieve Weather Data";
+        cityName = "Null";
+      }
       double temp = weatherData['main']['temp'];
       temperature = temp.toInt();
       weatherMessage = weatherModel.getMessage(temperature!);
@@ -73,11 +79,14 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   RawMaterialButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      namedCity = await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => CityScreen()));
+                      var weatherData =
+                          await weatherModel.getCityWeatherData(namedCity);
+                      updateUI(weatherData);
                     },
                     child: Icon(
                       Icons.location_city,
