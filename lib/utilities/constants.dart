@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const kTempTextStyle = TextStyle(
@@ -13,8 +16,21 @@ const kMessageTextStyle = TextStyle(
 const kButtonTextStyle = TextStyle(
   fontSize: 30.0,
   fontFamily: 'Spartan MB',
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
 );
 
 const kConditionTextStyle = TextStyle(
   fontSize: 100.0,
 );
+
+const borderRadius = 12.0;
+
+const kFieldBoxDecoration = InputDecoration(
+    fillColor: Colors.white,
+    filled: true,
+    icon: Icon(Icons.location_city, color: Colors.white),
+    border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12.0))),
+    hintText: "e.g Harare",
+    hintStyle: TextStyle(color: Colors.grey, fontSize: 20));
