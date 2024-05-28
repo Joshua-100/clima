@@ -4,7 +4,7 @@ class Location {
   double? latitude;
   double? longitude;
 
-  Future<void> getCurrentLocation() async {
+  Future<dynamic> getCurrentLocation() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     permission = await Geolocator.requestPermission();
@@ -12,7 +12,7 @@ class Location {
       //nothing
     }
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
 
     latitude = position.latitude;
     longitude = position.longitude;
